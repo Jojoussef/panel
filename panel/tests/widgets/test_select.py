@@ -128,6 +128,26 @@ def test_autocomplete_unrestricted(document, comm):
     select.value = 'bar'
     assert widget.value == 'bar'
 
+
+def test_autocomplete_unrestricted_non_string_values(document, comm):
+    select = AutocompleteInput(options=[1251, 1561], value=1399, label='Autocomplete', restrict=False)
+    widget = select.get_root(document, comm=comm)
+
+    assert select.value == 1399
+    assert widget.value == '1399'
+
+    select.value = 12.5
+    assert select.value == 12.5
+    assert widget.value == '12.5'
+
+    select.value = None
+    assert select.value is None
+    assert widget.value == ''
+
+    select.value = 1561
+    assert select.value == 1561
+    assert widget.value == '1561'
+
 def test_autocomplete_restricted_reset_on_new_options(document, comm):
     opts = {'A': 'a', '1': 1}
     select = AutocompleteInput(options=opts, value=1, label='Autocomplete', restrict=True)
